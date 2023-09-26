@@ -1,34 +1,53 @@
+@font-face {
+    font-family: 'Neue Montreal';
+    src: url(fonts/NeueMontreal-Regular.otf);
+}
+
 html, body{
     height: 100vh;
     width: 100vw;
     margin: 0%;
     padding: 0%;
+    background-color: #FAF9F6;
+    color: #232b2b;
 }
 
 h1, h2, button{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Neue Montreal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 10px;
     padding: 0;
+    font-weight: normal;
 }
 
 h1{
-    font-size: 45px;
+    font-size: 55px;
     text-align: center;
 }
 
 h2{
     font-size: 50px;
+    font-weight: bold;
 }
 
 button{
     width: 100px;   
     height: 50px; 
     border-radius: 10%; 
+    border-style: none;
     font-weight: normal;
+    background-color: rgb(245, 240, 240);
 }
 
-#start-btn:hover{
-    background-color: #83ff8f;
+button:hover{
+    background-color: #f6ebc6;
+}
+
+#reset-btn{
+    background-color: #d5ceb3;
+}
+
+#reset-btn:hover{
+    background-color: #c8b77e;
 }
 
 .buttonsContainer{

@@ -79,31 +79,46 @@ function increment(){
             minutes = 0
             hours += 1
         }
-        output = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
-        timerEl.textContent = output
+        updateTimer()
     }  
 }
 
+//decrements the timer by 1 second
 function decrement(){
     if(isPaused === false){ //only runs if timer is not on pause
         seconds -= 1
-        if(seconds < 0 && (minutes > 0 || hours > 0)){ //decrease minutes by 1 if there are extra minutes
+        if(seconds < 0 && (minutes > 0 || hours > 0)){ //decrease minutes by 1 if there are minutes available. Sets seconds to 59 (counting down)
             seconds = 59
             minutes -= 1
-        } else if(seconds < 0 && minutes === 0 && hours === 0){
+        } else if(seconds < 0 && minutes === 0 && hours === 0){ //does not run the rest of the code if there is no time left to decrement.
             seconds = 0
-            output = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
-            timerEl.textContent = output
+            updateTimer()
+            alert("Time to work!")
+            reset()
             return
         } 
-        if(minutes < 0 && hours > 0){
+        if(minutes < 0 && hours > 0){ //decrease hours by 1 if there are extra hours. Minutes and seconds set to 59.
             minutes = 59
             seconds = 59
             hours -= 1
         }
-        output = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
-        timerEl.textContent = output
+        updateTimer()
     }  
+}
+
+//resets the timer
+function reset(){
+    isPaused = true
+    hours = minutes = seconds = 0
+    clearInterval(timerID)
+    workBtn.textContent = "Start Working"
+    playBtn.textContent = "Start Playing"
+    updateTimer()
+}
+
+function updateTimer(){
+    output = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
+    timerEl.textContent = output
 }
 
 //Pads extra 0s to numbers less than 10
