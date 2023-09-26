@@ -1,7 +1,49 @@
-html{
+html, body{
     height: 100vh;
     width: 100vw;
+    margin: 0%;
+    padding: 0%;
 }
 
-body{
+h1, h2, button{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 10px;
+    padding: 0;
+}
+
+h1{
+    font-size: 45px;
+    text-align: center;
+}
+
+h2{
+    font-size: 50px;
+}
+
+button{
+    width: 100px;   
+    height: 50px; 
+    border-radius: 10%; 
+    font-weight: normal;
+}
+
+#start-btn:hover{
+    background-color: #83ff8f;
+}
+
+.buttonsContainer{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 10px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
 }

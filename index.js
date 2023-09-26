@@ -85,9 +85,9 @@ function increment(){
 }
 
 function decrement(){
-    if(isPaused === false){
+    if(isPaused === false){ //only runs if timer is not on pause
         seconds -= 1
-        if(seconds < 0 && (minutes > 0 || hours > 0)){
+        if(seconds < 0 && (minutes > 0 || hours > 0)){ //decrease minutes by 1 if there are extra minutes
             seconds = 59
             minutes -= 1
         } else if(seconds < 0 && minutes === 0 && hours === 0){
