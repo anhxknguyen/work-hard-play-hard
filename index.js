@@ -1,6 +1,8 @@
 let timerEl = document.getElementById("timer-el")
 let workBtn = document.getElementById("work-btn")
 let playBtn = document.getElementById("play-btn")
+let resetBtn = document.getElementById("reset-btn")
+let bodyEl = document.getElementById("body")
 let hours = 0
 let minutes = 0
 let seconds = 0
@@ -24,7 +26,6 @@ function workStart(){
 
     if(isWorking === true){
         workingPause()
-        isWorking = false
     }
     if(isWorking === false && isPaused ===false){
         isPlaying = false
@@ -44,7 +45,6 @@ function playStart(){
     
     if(isPlaying === true){
         playingPause()
-        isPlaying = false
     }
     if(isPlaying === false && isPaused === false){
         isWorking = false
@@ -55,16 +55,14 @@ function playStart(){
 
 //pauses the working timer
 function workingPause(){
-    isPaused = true
+    stop()
     workBtn.textContent = "Resume Working"
-    clearInterval(timerID)
 }
 
 //pauses the playing timer
 function playingPause(){
-    isPaused = true
+    stop()
     playBtn.textContent = "Resume Playing"
-    clearInterval(timerID)
 }
 
 //increments the timer by 1 second
@@ -91,10 +89,13 @@ function decrement(){
             seconds = 59
             minutes -= 1
         } else if(seconds < 0 && minutes === 0 && hours === 0){ //does not run the rest of the code if there is no time left to decrement.
+            bodyEl.style.backgroundColor = '#ff8178'
+            resetBtn.style.backgroundColor = '#e64d43'
+            resetBtn.style.color = 'white'
             seconds = 0
             updateTimer()
-            alert("Time to work!")
-            reset()
+            stop()
+            setTimeout(timeout, 2000)
             return
         } 
         if(minutes < 0 && hours > 0){ //decrease hours by 1 if there are extra hours. Minutes and seconds set to 59.
@@ -106,11 +107,19 @@ function decrement(){
     }  
 }
 
+
+function timeout(){
+    if(confirm("Time to work! Press okay to reset.")){
+        reset()
+    }
+}
 //resets the timer
 function reset(){
-    isPaused = true
+    stop()
     hours = minutes = seconds = 0
-    clearInterval(timerID)
+    bodyEl.style.backgroundColor = '#FAF9F6'
+    resetBtn.style.backgroundColor = '#d5ceb3'
+    resetBtn.style.color = '#232b2b'
     workBtn.textContent = "Start Working"
     playBtn.textContent = "Start Playing"
     updateTimer()
@@ -119,6 +128,12 @@ function reset(){
 function updateTimer(){
     output = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
     timerEl.textContent = output
+}
+
+function stop(){
+    isPaused = true
+    isWorking = isPlaying = false
+    clearInterval(timerID)
 }
 
 //Pads extra 0s to numbers less than 10

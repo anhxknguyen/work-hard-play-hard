@@ -66,3 +66,7 @@ button:hover{
     justify-content: center;
     align-items: center;
 }
+
+.animatedBackgroundChange{
+    transition: background-color 2s ease, color 1s ease;
+}
