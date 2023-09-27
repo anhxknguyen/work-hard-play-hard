@@ -179,7 +179,7 @@ function workStart(){
         totalSeconds += seconds
         totalMinutes += minutes
         startTime = (new Date()).getTime()
-        timerID = setInterval(updateTimer, 100)
+        timerID = setInterval(updateTimer, 1000)
         workBtn.textContent = "Pause Work"
     } 
 }
