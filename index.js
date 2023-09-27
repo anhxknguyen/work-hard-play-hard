@@ -144,7 +144,7 @@ let resetBtn = document.getElementById("reset-btn")
 let bodyEl = document.getElementById("body")
 
 let isPaused = true
-let isWorking = false
+let isWorking = isPlaying = false
 
 let hours = minutes = seconds = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
 printTimer()
@@ -155,7 +155,7 @@ let timerID
 
 
 function updateTimer(){
-    seconds = Math.floor((Date.now() - startTime) / 100)
+    seconds = Math.floor((Date.now() - startTime) / 1000)
     minutes = Math.floor(seconds / 60)
     hours = Math.floor(minutes / 60)
     secondsOutput = (totalSeconds + (seconds % 60)) % 60
@@ -170,6 +170,7 @@ function printTimer(){
 
 function workStart(){
     isPaused = false
+    
     if(isWorking === true){
         workingPause()
     }
