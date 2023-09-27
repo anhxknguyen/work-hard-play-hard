@@ -164,15 +164,8 @@ function pad(num){
 
 function turnNormal(){
     bodyEl.style.backgroundColor = '#FAF9F6'
-    resetBtn.style.backgroundColor = '#d5ceb3'
-    resetBtn.style.color = '#232b2b'
-    resetBtn.style.backgroundColor = null
-    resetBtn.style.setProperty('--backColor', '#c8b77e')
 }
 
 function turnRed(){
     bodyEl.style.backgroundColor = '#ff8178'
-    /*resetBtn.style.backgroundColor = '#e64d43'
-    resetBtn.style.color = 'white'
-    resetBtn.style.setProperty('--backColor', '#8a0e06')*/
 }
