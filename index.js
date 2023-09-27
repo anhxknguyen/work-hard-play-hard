@@ -146,7 +146,7 @@ let bodyEl = document.getElementById("body")
 let isPaused = true
 let isWorking = isPlaying = false
 
-let hours = minutes = seconds = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
+let milisec= hours = minutes = seconds = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
 printTimer()
 let startTime
 let currentTime
@@ -154,23 +154,23 @@ let elapsedTime
 let timerID
 
 
-function updateTimer(){
-    seconds = Math.floor((Date.now() - startTime) / 1000)
-    minutes = Math.floor(seconds / 60)
-    hours = Math.floor(minutes / 60)
+function updateTimerWork(){
+    milisec = (Date.now() - startTime)
+    seconds = milisec / 1000
+    minutes = seconds / 60
+    hours = minutes / 60
     secondsOutput = (totalSeconds + (seconds % 60)) % 60
     minutesOutput = (totalMinutes + (minutes % 60)) % 60
     printTimer()
 }  
 
 function printTimer(){
-    let output = pad(hours) + ":" + pad(minutesOutput) + ":" + pad(secondsOutput)
+    let output = pad(Math.trunc(hours)) + ":" + pad(Math.trunc(minutesOutput)) + ":" + pad(Math.trunc(secondsOutput))
     timerEl.textContent = output
 }
 
 function workStart(){
     isPaused = false
-    
     if(isWorking === true){
         workingPause()
     }
@@ -179,7 +179,7 @@ function workStart(){
         totalSeconds += seconds
         totalMinutes += minutes
         startTime = (new Date()).getTime()
-        timerID = setInterval(updateTimer, 1000)
+        timerID = setInterval(updateTimerWork, 1)
         workBtn.textContent = "Pause Work"
     } 
 }
@@ -195,6 +195,16 @@ function stop(){
     clearInterval(timerID)
 }
 
+function reset(){
+    stop()
+    seconds = minutes = hours = minutesOutput = secondsOutput = totalMinutes = totalSeconds = 0
+    bodyEl.style.backgroundColor = '#FAF9F6'
+    resetBtn.style.backgroundColor = '#d5ceb3'
+    resetBtn.style.color = '#232b2b'
+    workBtn.textContent = "Start Working"
+    playBtn.textContent = "Start Playing"
+    printTimer()
+}
 
 
 
