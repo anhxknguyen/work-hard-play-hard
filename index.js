@@ -1,142 +1,3 @@
-/*let timerEl = document.getElementById("timer-el")
-let workBtn = document.getElementById("work-btn")
-let playBtn = document.getElementById("play-btn")
-let resetBtn = document.getElementById("reset-btn")
-let bodyEl = document.getElementById("body")
-let hours = 0
-let minutes = 0
-let seconds = 0
-let isPaused = true
-let isWorking = false
-let isPlaying = false
-let output = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
-timerEl.textContent = output
-var timerID = null
-
-
-//Starts counting up when workStart button pressed
-function workStart(){
-    isPaused = false
-    if(isPlaying === true){
-        clearInterval(timerID)
-        isPlaying = false
-    }
-    workBtn.textContent = "Pause Work"
-    playBtn.textContent = "Start Playing"
-
-    if(isWorking === true){
-        workingPause()
-    }
-    if(isWorking === false && isPaused ===false){
-        isPlaying = false
-        isWorking = true
-        timerID = setInterval(increment, 1000)
-    }
-}
-
-function playStart(){
-    isPaused = false
-    if(isWorking === true){
-        clearInterval(timerID)
-        isWorking = false
-    }
-    playBtn.textContent = "Pause Play"
-    workBtn.textContent = "Start Working"
-    
-    if(isPlaying === true){
-        playingPause()
-    }
-    if(isPlaying === false && isPaused === false){
-        isWorking = false
-        isPlaying = true
-        timerID = setInterval(decrement, 1000)
-    }
-}
-
-//pauses the working timer
-function workingPause(){
-    stop()
-    workBtn.textContent = "Resume Working"
-}
-
-//pauses the playing timer
-function playingPause(){
-    stop()
-    playBtn.textContent = "Resume Playing"
-}
-
-//increments the timer by 1 second
-function increment(){
-    if(isPaused === false){
-        seconds += 1
-        if(seconds === 60){
-            seconds = 0
-            minutes += 1
-        }
-        if(minutes === 60){
-            minutes = 0
-            hours += 1
-        }
-        updateTimer()
-    }  
-}
-
-//decrements the timer by 1 second
-function decrement(){
-    if(isPaused === false){ //only runs if timer is not on pause
-        seconds -= 1
-        if(seconds < 0 && (minutes > 0 || hours > 0)){ //decrease minutes by 1 if there are minutes available. Sets seconds to 59 (counting down)
-            seconds = 59
-            minutes -= 1
-        } else if(seconds < 0 && minutes === 0 && hours === 0){ //does not run the rest of the code if there is no time left to decrement.
-            bodyEl.style.backgroundColor = '#ff8178'
-            resetBtn.style.backgroundColor = '#e64d43'
-            resetBtn.style.color = 'white'
-            seconds = 0
-            updateTimer()
-            stop()
-            setTimeout(timeout, 2000)
-            return
-        } 
-        if(minutes < 0 && hours > 0){ //decrease hours by 1 if there are extra hours. Minutes and seconds set to 59.
-            minutes = 59
-            seconds = 59
-            hours -= 1
-        }
-        updateTimer()
-    }  
-}
-
-
-function timeout(){
-    if(confirm("Time to work! Press okay to reset.")){
-        reset()
-    }
-}
-//resets the timer
-function reset(){
-    stop()
-    hours = minutes = seconds = 0
-    bodyEl.style.backgroundColor = '#FAF9F6'
-    resetBtn.style.backgroundColor = '#d5ceb3'
-    resetBtn.style.color = '#232b2b'
-    workBtn.textContent = "Start Working"
-    playBtn.textContent = "Start Playing"
-    updateTimer()
-}
-
-function updateTimer(){
-    output = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds)
-    timerEl.textContent = output
-}
-
-function stop(){
-    isPaused = true
-    isWorking = isPlaying = false
-    clearInterval(timerID)
-}
-*/
-
 let timerEl = document.getElementById("timer-el")
 let workBtn = document.getElementById("work-btn")
 let playBtn = document.getElementById("play-btn")
@@ -144,17 +5,21 @@ let resetBtn = document.getElementById("reset-btn")
 let bodyEl = document.getElementById("body")
 
 let isPaused = true
-let isWorking = isPlaying = false
+let isWorking = isPlaying = hasEnded = false
 
 let milisec= hours = minutes = seconds = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
 printTimer()
 let startTime
+let endTime
 let currentTime
+let timerID 
+let lastRan
 let elapsedTime
-let timerID
+let timeCompare
 
 
 function updateTimerWork(){
+    timerEl.style.color = "#23990e"
     milisec = (Date.now() - startTime)
     seconds = milisec / 1000
     minutes = seconds / 60
@@ -169,38 +34,117 @@ function printTimer(){
     timerEl.textContent = output
 }
 
+
+function updateTimerPlay(){
+    timerEl.style.color = "#7d0202"
+    if(milisec > 0){
+        elapsedTime = (Date.now() - timeCompare)
+        milisec = (startTime - Date.now())
+        seconds = milisec / 1000
+        minutes = seconds / 60
+        hours = minutes / 60    
+        secondsOutput = ((seconds % 60)) % 60
+        minutesOutput = ((minutes % 60)) % 60
+        printTimer()
+    } else{
+        milisec = 0
+        hasEnded = true
+        stop()
+        turnRed()
+        playBtn.textContent = "Start Playing"
+        printTimer()
+    }
+}
+
+
+function playStart(){
+    isPaused = false
+    if(isPlaying === true){
+        playingPause()
+    }
+
+    if(isWorking === true){
+        clearInterval(timerID)
+        isWorking = false
+    }
+    
+    if(isPaused == false && isPlaying == false){
+        isPlaying = true
+        if(lastRan == "working"){
+            totalSeconds += seconds
+            totalMinutes += minutes
+        } else if(lastRan == "playing"){
+            totalSeconds -= elapsedTime / 1000
+            totalMinutes -= totalSeconds / 60
+            console.log(totalSeconds)
+        }
+        lastRan = "playing"
+        timeCompare = (new Date()).getTime()
+        startTime = Date.now() + (totalSeconds * 1000)
+        timerID = setInterval(updateTimerPlay, 1)
+        playBtn.textContent = "Pause Play"
+        workBtn.textContent = "Start Working"
+    } 
+}
+
 function workStart(){
     isPaused = false
+
+    if(hasEnded === true){
+        hasEnded = false
+        reset()
+        isPaused = false
+    }
     if(isWorking === true){
         workingPause()
     }
+    console.log("hotdog")
+    if(isPlaying === true){
+        clearInterval(timerID)
+        isPlaying = false
+    }
+
     if(isPaused == false && isWorking == false){
         isWorking = true
-        totalSeconds += seconds
-        totalMinutes += minutes
+        if(lastRan == "working"){
+            totalSeconds += seconds
+            totalMinutes += minutes
+        } else if(lastRan == "playing"){
+            turnNormal()
+            totalSeconds -= elapsedTime / 1000
+            totalMinutes -= totalSeconds / 60
+            console.log(totalSeconds)
+        }
+        lastRan = "working"
         startTime = (new Date()).getTime()
         timerID = setInterval(updateTimerWork, 1)
         workBtn.textContent = "Pause Work"
+        playBtn.textContent = "Start Playing"
     } 
 }
 
 function workingPause(){
     stop()
-    workBtn.textContent = "Resume Working"
+    workBtn.textContent = "Resume Work"
+}
+
+function playingPause(){
+    stop()
+    playBtn.textContent = "Resume Play"
 }
 
 function stop(){
+    timerEl.style.color = "#232b2b"
     isPaused = true
     isWorking = false
+    isPlaying = false
     clearInterval(timerID)
 }
 
 function reset(){
     stop()
-    seconds = minutes = hours = minutesOutput = secondsOutput = totalMinutes = totalSeconds = 0
-    bodyEl.style.backgroundColor = '#FAF9F6'
-    resetBtn.style.backgroundColor = '#d5ceb3'
-    resetBtn.style.color = '#232b2b'
+    elapsedTime = milisec = seconds = minutes = hours = minutesOutput = secondsOutput = totalMinutes = totalSeconds = 0
+    turnNormal()
     workBtn.textContent = "Start Working"
     playBtn.textContent = "Start Playing"
     printTimer()
@@ -218,3 +162,17 @@ function pad(num){
     return num
 }
 
+function turnNormal(){
+    bodyEl.style.backgroundColor = '#FAF9F6'
+    resetBtn.style.backgroundColor = '#d5ceb3'
+    resetBtn.style.color = '#232b2b'
+    resetBtn.style.backgroundColor = null
+    resetBtn.style.setProperty('--backColor', '#c8b77e')
+}
+
+function turnRed(){
+    bodyEl.style.backgroundColor = '#ff8178'
+    /*resetBtn.style.backgroundColor = '#e64d43'
+    resetBtn.style.color = 'white'
+    resetBtn.style.setProperty('--backColor', '#8a0e06')*/
+}

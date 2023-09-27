@@ -55,11 +55,12 @@ button:hover{
 }
 
 #reset-btn{
-    background-color: #d5ceb3;
+    background-color: #3b3e3e;
+    color: white
 }
 
 #reset-btn:hover{
-    background-color: #c8b77e;
+    background-color: #232b2b
 }
 
 .buttonsContainer{
@@ -91,6 +92,10 @@ button:hover{
     font-family: 'Yukita Sans', 'Neue Montreal', sans-serif;
 }
 
-.animatedBackgroundChange{
+body.animatedBackgroundChange{
     transition: background-color 1s ease, color 1s ease;
+}
+
+.colorChange{
+    transition: color 0.5s ease
 }
