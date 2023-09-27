@@ -1,4 +1,4 @@
-let timerEl = document.getElementById("timer-el")
+/*let timerEl = document.getElementById("timer-el")
 let workBtn = document.getElementById("work-btn")
 let playBtn = document.getElementById("play-btn")
 let resetBtn = document.getElementById("reset-btn")
@@ -135,6 +135,68 @@ function stop(){
     isWorking = isPlaying = false
     clearInterval(timerID)
 }
+*/
+
+let timerEl = document.getElementById("timer-el")
+let workBtn = document.getElementById("work-btn")
+let playBtn = document.getElementById("play-btn")
+let resetBtn = document.getElementById("reset-btn")
+let bodyEl = document.getElementById("body")
+
+let isPaused = true
+let isWorking = false
+
+let hours = minutes = seconds = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
+printTimer()
+let startTime
+let currentTime
+let elapsedTime
+let timerID
+
+
+function updateTimer(){
+    seconds = Math.floor((Date.now() - startTime) / 100)
+    minutes = Math.floor(seconds / 60)
+    hours = Math.floor(minutes / 60)
+    secondsOutput = (totalSeconds + (seconds % 60)) % 60
+    minutesOutput = (totalMinutes + (minutes % 60)) % 60
+    printTimer()
+}  
+
+function printTimer(){
+    let output = pad(hours) + ":" + pad(minutesOutput) + ":" + pad(secondsOutput)
+    timerEl.textContent = output
+}
+
+function workStart(){
+    isPaused = false
+    if(isWorking === true){
+        workingPause()
+    }
+    if(isPaused == false && isWorking == false){
+        isWorking = true
+        totalSeconds += seconds
+        totalMinutes += minutes
+        startTime = (new Date()).getTime()
+        timerID = setInterval(updateTimer, 100)
+        workBtn.textContent = "Pause Work"
+    } 
+}
+
+function workingPause(){
+    stop()
+    workBtn.textContent = "Resume Working"
+}
+
+function stop(){
+    isPaused = true
+    isWorking = false
+    clearInterval(timerID)
+}
+
+
+
+
 
 //Pads extra 0s to numbers less than 10
 function pad(num){
