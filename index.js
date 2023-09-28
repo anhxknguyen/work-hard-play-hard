@@ -3,10 +3,10 @@ let workBtn = document.getElementById("work-btn")
 let playBtn = document.getElementById("play-btn")
 let resetBtn = document.getElementById("reset-btn")
 let bodyEl = document.getElementById("body")
-
+let workTxt = document.getElementById("work-text")
+let playTxt = document.getElementById("play-text")
 let isPaused = true
 let isWorking = isPlaying = hasEnded = false
-
 let milisec= hours = minutes = seconds = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
 printTimer()
 let startTime
@@ -19,7 +19,8 @@ let timeCompare
 
 
 function updateTimerWork(){
-    timerEl.style.color = "#23990e"
+    workTxt.style.color = timerEl.style.color = "#23990e"
+    playTxt.style.color = "#232b2b"
     milisec = (Date.now() - startTime)
     seconds = milisec / 1000
     minutes = seconds / 60
@@ -36,7 +37,8 @@ function printTimer(){
 
 
 function updateTimerPlay(){
-    timerEl.style.color = "#7d0202"
+    playTxt.style.color = timerEl.style.color = "#7d0202"
+    workTxt.style.color = "#232b2b"
     if(milisec > 0){
         elapsedTime = (Date.now() - timeCompare)
         milisec = (startTime - Date.now())
@@ -134,7 +136,7 @@ function playingPause(){
 }
 
 function stop(){
-    timerEl.style.color = "#232b2b"
+    playTxt.style.color = workTxt.style.color = timerEl.style.color = "#232b2b"
     isPaused = true
     isWorking = false
     isPlaying = false

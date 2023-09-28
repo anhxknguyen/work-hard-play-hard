@@ -34,6 +34,9 @@ h1{
     font-size: 55px;
     text-align: center;
     font-weight: light;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
 
 h2{
@@ -42,12 +45,13 @@ h2{
 }
 
 button{
-    width: 100px;   
-    height: 50px; 
+    width: 125px;   
+    height: 60px; 
     border-radius: 10%; 
     border-style: none;
     font-weight: normal;
     background-color: rgb(245, 240, 240);
+    color: #232b2b;
 }
 
 button:hover{
@@ -86,16 +90,156 @@ button:hover{
     font-family: 'Lemon Milk', 'Neue Montreal', sans-serif;
 }
 
-.biggerPlay{
-    font-size: 55px;
-    font-weight: bold;
-    font-family: 'Yukita Sans', 'Neue Montreal', sans-serif;
-}
-
 body.animatedBackgroundChange{
     transition: background-color 1s ease, color 1s ease;
 }
 
 .colorChange{
     transition: color 0.5s ease
+}
+
+@media (max-width: 320px){
+    .container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1{
+        display: block;
+        gap: 0px;
+    }
+
+    span{
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
+    .buttonsContainer{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 500px){
+    .container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1{
+        font-size: 45px;
+        text-align: center;
+        font-weight: light;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    h2{
+        font-size: 50px;
+        font-weight: bold;
+    }
+
+    .bigger{
+        font-size: 50px;
+        font-weight: bold;
+        font-family: 'Lemon Milk', 'Neue Montreal', sans-serif;
+    }
+    
+    .buttonsContainer{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px){
+    .container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1{
+        font-size: 45px;
+        text-align: center;
+        font-weight: light;
+        display: flex;
+        gap: 10px;
+    }
+    
+    h2{
+        font-size: 50px;
+        font-weight: bold;
+    }
+
+    .bigger{
+        font-size: 50px;
+        font-weight: bold;
+        font-family: 'Lemon Milk', 'Neue Montreal', sans-serif;
+    }
+
+    
+}
+
+@media (min-width: 1440px){
+    .container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1{
+        font-size: 70px;
+        text-align: center;
+        font-weight: light;
+        display: flex;
+        gap: 10px;
+    }
+    
+    h2{
+        font-size: 65px;
+        font-weight: bold;
+    }
+
+    .bigger{
+        font-size: 75px;
+        font-weight: bold;
+        font-family: 'Lemon Milk', 'Neue Montreal', sans-serif;
+    }
+
+    button{
+        width: 150px;   
+        height: 75px; 
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 2560px){
+    .container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1{
+        font-size: 140px;
+        text-align: center;
+        font-weight: light;
+        display: flex;
+        gap: 10px;
+    }
+    
+    h2{
+        font-size: 130px;
+        font-weight: bold;
+    }
+
+    .bigger{
+        font-size: 150px;
+        font-weight: bold;
+        font-family: 'Lemon Milk', 'Neue Montreal', sans-serif;
+    }
+
+    button{
+        width: 300px;   
+        height: 150px; 
+        font-size: 30px;
+    }
 }
