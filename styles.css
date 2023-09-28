@@ -99,10 +99,13 @@ body.animatedBackgroundChange{
 }
 
 @media (max-width: 320px){
+    html, body{
+        max-height: 100vh;
+    }
+
     .container{
         display: flex;
         flex-direction: column;
-        max-height: 100vh;
     }
 
     h1{
@@ -123,10 +126,13 @@ body.animatedBackgroundChange{
 }
 
 @media (max-width: 500px){
+    html, body{
+        max-height: 100vh;
+    }
+
     .container{
         display: flex;
         flex-direction: column;
-        max-height: 100vh;
     }
 
     h1{
@@ -155,11 +161,13 @@ body.animatedBackgroundChange{
 }
 
 @media (max-width: 768px){
+    html, body{
+        max-height: 100vh;
+    }
+
     .container{
         display: flex;
         flex-direction: column;
-        max-height: 100vh;
-
     }
 
     h1{
