@@ -1,14 +1,13 @@
-let timerEl = document.getElementById("timer-el")
-let workBtn = document.getElementById("work-btn")
-let playBtn = document.getElementById("play-btn")
-let resetBtn = document.getElementById("reset-btn")
-let bodyEl = document.getElementById("body")
-let workTxt = document.getElementById("work-text")
-let playTxt = document.getElementById("play-text")
+const timerEl = document.getElementById("timer-el")
+const workBtn = document.getElementById("work-btn")
+const playBtn = document.getElementById("play-btn")
+const resetBtn = document.getElementById("reset-btn")
+const bodyEl = document.getElementById("body")
+const workTxt = document.getElementById("work-text")
+const playTxt = document.getElementById("play-text")
 let isPaused = true
 let isWorking = isPlaying = hasEnded = false
-let milisec= hours = minutes = seconds = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
-printTimer()
+let milisec= seconds = minutes = hours = secondsOutput = minutesOutput = totalSeconds = totalMinutes = 0
 let startTime
 let endTime
 let currentTime
@@ -17,48 +16,40 @@ let lastRan
 let elapsedTime
 let timeCompare
 
+//localStorage related variables
+let timeArr = [milisec, seconds, minutes, hours]
+let timeOutputsArr = [secondsOutput, minutesOutput]
+let totalTimeArr = [totalSeconds, totalMinutes]
 
-function updateTimerWork(){
-    workTxt.style.color = timerEl.style.color = "#23990e"
-    playTxt.style.color = "#232b2b"
-    milisec = (Date.now() - startTime)
-    seconds = milisec / 1000
-    minutes = seconds / 60
-    hours = minutes / 60
-    secondsOutput = (totalSeconds + (seconds % 60)) % 60
-    minutesOutput = (totalMinutes + (minutes % 60)) % 60
-    printTimer()
-}  
+const timeLocalStorage = JSON.parse(localStorage.getItem("time"))
+const timeOutputsLocalStorage = JSON.parse(localStorage.getItem("timeOutputs"))
+const totalTimeLocalStorage = JSON.parse(localStorage.getItem("totalTime"))
 
-function printTimer(){
-    let output = pad(Math.trunc(hours)) + ":" + pad(Math.trunc(minutesOutput)) + ":" + pad(Math.trunc(secondsOutput))
-    timerEl.textContent = output
+//if there is time in local storage
+if(timeLocalStorage){
+    timeArr = timeLocalStorage
+    milisec = timeArr[0]
+    seconds = timeArr[1]
+    minutes = timeArr[2]
+    hours = timeArr[3]
 }
 
-
-function updateTimerPlay(){
-    playTxt.style.color = timerEl.style.color = "#7d0202"
-    workTxt.style.color = "#232b2b"
-    if(milisec > 0){
-        elapsedTime = (Date.now() - timeCompare)
-        milisec = (startTime - Date.now())
-        seconds = milisec / 1000
-        minutes = seconds / 60
-        hours = minutes / 60    
-        secondsOutput = ((seconds % 60)) % 60
-        minutesOutput = ((minutes % 60)) % 60
-        printTimer()
-    } else{
-        milisec = 0
-        hasEnded = true
-        stop()
-        turnRed()
-        playBtn.textContent = "Start Playing"
-        printTimer()
-    }
+if(timeOutputsLocalStorage){
+    timeOutputsArr = timeOutputsLocalStorage
+    secondsOutput = timeOutputsArr[0]
+    minutesOutput = timeOutputsArr[1]
 }
 
+if(totalTimeLocalStorage){
+    totalTimeArr = totalTimeLocalStorage
+    totalSeconds = totalTimeArr[0]
+    totalMinutes = totalTimeArr[1]
+}
 
+printTimer()
+
+
+//Play Button Event
 playBtn.addEventListener("click", () => {
     isPaused = false
     if(isPlaying === true){
@@ -75,10 +66,11 @@ playBtn.addEventListener("click", () => {
         if(lastRan == "working"){
             totalSeconds += seconds
             totalMinutes += minutes
+            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         } else if(lastRan == "playing"){
             totalSeconds -= elapsedTime / 1000
             totalMinutes -= totalSeconds / 60
-            console.log(totalSeconds)
+            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         }
         lastRan = "playing"
         timeCompare = (new Date()).getTime()
@@ -88,6 +80,8 @@ playBtn.addEventListener("click", () => {
         workBtn.textContent = "Start Working"
     } 
 })
+
+//Work Button Event
 workBtn.addEventListener("click", () => {
     isPaused = false
 
@@ -110,11 +104,12 @@ workBtn.addEventListener("click", () => {
         if(lastRan == "working"){
             totalSeconds += seconds
             totalMinutes += minutes
+            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         } else if(lastRan == "playing"){
             turnNormal()
             totalSeconds -= elapsedTime / 1000
             totalMinutes -= totalSeconds / 60
-            console.log(totalSeconds)
+            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         }
         lastRan = "working"
         startTime = (new Date()).getTime()
@@ -123,6 +118,54 @@ workBtn.addEventListener("click", () => {
         playBtn.textContent = "Start Playing"
     } 
 })
+
+//Update timer while playing
+function updateTimerPlay(){
+    playTxt.style.color = timerEl.style.color = "#7d0202"
+    workTxt.style.color = "#232b2b"
+    if(milisec > 0){
+        elapsedTime = (Date.now() - timeCompare)
+        milisec = (startTime - Date.now())
+        seconds = milisec / 1000
+        minutes = seconds / 60
+        hours = minutes / 60    
+        secondsOutput = ((seconds % 60)) % 60
+        minutesOutput = ((minutes % 60)) % 60
+        printTimer()
+        localStorage.setItem("time", JSON.stringify(timeArr))
+        localStorage.setItem("timeOutputs", JSON.stringify(timeOutputsArr))
+    } else{
+        milisec = 0
+        hasEnded = true
+        stop()
+        turnRed()
+        playBtn.textContent = "Start Playing"
+        printTimer()
+    }
+}
+
+//Update timer while working
+function updateTimerWork(){
+    workTxt.style.color = timerEl.style.color = "#23990e"
+    playTxt.style.color = "#232b2b"
+    milisec = (Date.now() - startTime)
+    seconds = milisec / 1000
+    minutes = seconds / 60
+    hours = minutes / 60
+    secondsOutput = (totalSeconds + (seconds % 60)) % 60
+    minutesOutput = (totalMinutes + (minutes % 60)) % 60
+    localStorage.setItem("time", JSON.stringify(timeArr))
+    localStorage.setItem("timeOutputs", JSON.stringify(timeOutputsArr))
+    printTimer()
+}  
+
+function stop(){
+    playTxt.style.color = workTxt.style.color = timerEl.style.color = "#232b2b"
+    isPaused = true
+    isWorking = false
+    isPlaying = false
+    clearInterval(timerID)
+}
 
 function workingPause(){
     stop()
@@ -134,13 +177,11 @@ function playingPause(){
     playBtn.textContent = "Resume Play"
 }
 
-function stop(){
-    playTxt.style.color = workTxt.style.color = timerEl.style.color = "#232b2b"
-    isPaused = true
-    isWorking = false
-    isPlaying = false
-    clearInterval(timerID)
+function printTimer(){
+    let output = pad(Math.trunc(hours)) + ":" + pad(Math.trunc(minutesOutput)) + ":" + pad(Math.trunc(secondsOutput))
+    timerEl.textContent = output
 }
+
 
 resetBtn.addEventListener("click", reset)
 
@@ -148,6 +189,7 @@ function reset(){
     stop()
     elapsedTime = milisec = seconds = minutes = hours = minutesOutput = secondsOutput = totalMinutes = totalSeconds = 0
     turnNormal()
+    localStorage.clear()
     workBtn.textContent = "Start Working"
     playBtn.textContent = "Start Playing"
     printTimer()
