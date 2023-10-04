@@ -59,7 +59,7 @@ function updateTimerPlay(){
 }
 
 
-function playStart(){
+playBtn.addEventListener("click", () => {
     isPaused = false
     if(isPlaying === true){
         playingPause()
@@ -87,9 +87,8 @@ function playStart(){
         playBtn.textContent = "Pause Play"
         workBtn.textContent = "Start Working"
     } 
-}
-
-function workStart(){
+})
+workBtn.addEventListener("click", () => {
     isPaused = false
 
     if(hasEnded === true){
@@ -123,7 +122,7 @@ function workStart(){
         workBtn.textContent = "Pause Work"
         playBtn.textContent = "Start Playing"
     } 
-}
+})
 
 function workingPause(){
     stop()
@@ -142,6 +141,8 @@ function stop(){
     isPlaying = false
     clearInterval(timerID)
 }
+
+resetBtn.addEventListener("click", reset)
 
 function reset(){
     stop()
