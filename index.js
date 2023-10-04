@@ -190,7 +190,7 @@ function reset(){
     printTimer()
 }
 
-window.onbeforeunload = () => {
+window.unload = () => {
     stop()
     updateTotalTimes()
 }
