@@ -63,17 +63,7 @@ playBtn.addEventListener("click", () => {
     
     if(isPaused == false && isPlaying == false){
         isPlaying = true
-        if(lastRan == "working"){
-            totalSeconds += seconds
-            totalMinutes += minutes
-            totalTimeArr = [totalSeconds, totalMinutes]
-            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
-        } else if(lastRan == "playing"){
-            totalSeconds -= elapsedTime / 1000
-            totalMinutes -= totalSeconds / 60
-            totalTimeArr = [totalSeconds, totalMinutes]
-            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
-        }
+        updateTotalTimes()
         lastRan = "playing"
         timeCompare = (new Date()).getTime()
         startTime = Date.now() + (totalSeconds * 1000)
@@ -103,19 +93,9 @@ workBtn.addEventListener("click", () => {
 
     if(isPaused == false && isWorking == false){
         isWorking = true
-        if(lastRan == "working"){
-            totalSeconds += seconds
-            totalMinutes += minutes
-            totalTimeArr = [totalSeconds, totalMinutes]
-            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
-        } else if(lastRan == "playing"){
-            turnNormal()
-            totalSeconds -= elapsedTime / 1000
-            totalMinutes -= totalSeconds / 60
-            totalTimeArr = [totalSeconds, totalMinutes]
-            localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
-        }
+        updateTotalTimes()
         lastRan = "working"
+        turnNormal()
         startTime = (new Date()).getTime()
         timerID = setInterval(updateTimerWork, 1)
         workBtn.textContent = "Pause Work"
@@ -205,6 +185,21 @@ function reset(){
 
 window.onbeforeunload = () => {
     stop()
+    updateTotalTimes()
+}
+
+function updateTotalTimes(){
+    if(lastRan == "working"){
+        totalSeconds += seconds
+        totalMinutes += minutes
+        totalTimeArr = [totalSeconds, totalMinutes]
+        localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
+    } else if(lastRan == "playing"){
+        totalSeconds -= elapsedTime / 1000
+        totalMinutes -= totalSeconds / 60
+        totalTimeArr = [totalSeconds, totalMinutes]
+        localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
+    }
 }
 
 
