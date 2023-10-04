@@ -24,7 +24,7 @@ let totalTimeArr = [totalSeconds, totalMinutes]
 const timeLocalStorage = JSON.parse(localStorage.getItem("time"))
 const timeOutputsLocalStorage = JSON.parse(localStorage.getItem("timeOutputs"))
 const totalTimeLocalStorage = JSON.parse(localStorage.getItem("totalTime"))
-const lastRanLocalStorage = JSON.parse(localStorage.getItem("lastRan"))
+//const lastRanLocalStorage = localStorage.getItem("lastRan")
 
 //if there is time in local storage
 if(timeLocalStorage){
@@ -41,9 +41,9 @@ if(timeOutputsLocalStorage){
     minutesOutput = timeOutputsArr[1]
 }
 
-if(lastRanLocalStorage){
-    lastRan = lastRanLocalStorage
-}
+//if(lastRanLocalStorage){
+//    lastRan = lastRanLocalStorage
+//}
 
 if(totalTimeLocalStorage){
     totalTimeArr = totalTimeLocalStorage
@@ -70,7 +70,7 @@ playBtn.addEventListener("click", () => {
         isPlaying = true
         updateTotalTimes()
         lastRan = "playing"
-        localStorage.setItem("lastRan", lastRan)
+        //localStorage.setItem("lastRan", lastRan)
         timeCompare = (new Date()).getTime()
         startTime = Date.now() + (totalSeconds * 1000)
         timerID = setInterval(updateTimerPlay, 1)
@@ -91,7 +91,7 @@ workBtn.addEventListener("click", () => {
     if(isWorking === true){
         workingPause()
     }
-    console.log("hotdog")
+
     if(isPlaying === true){
         clearInterval(timerID)
         isPlaying = false
@@ -101,7 +101,7 @@ workBtn.addEventListener("click", () => {
         isWorking = true
         updateTotalTimes()
         lastRan = "working"
-        localStorage.setItem("lastRan", lastRan)
+        //localStorage.setItem("lastRan", lastRan)
         turnNormal()
         startTime = (new Date()).getTime()
         timerID = setInterval(updateTimerWork, 1)
@@ -203,7 +203,7 @@ function updateTotalTimes(){
         localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
     } else if(lastRan == "playing"){
         totalSeconds -= elapsedTime / 1000
-        totalMinutes -= totalSeconds / 60
+        totalMinutes -= elapsedTime / 1000 / 60
         totalTimeArr = [totalSeconds, totalMinutes]
         localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
     }
