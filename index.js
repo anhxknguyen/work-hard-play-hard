@@ -66,10 +66,12 @@ playBtn.addEventListener("click", () => {
         if(lastRan == "working"){
             totalSeconds += seconds
             totalMinutes += minutes
+            totalTimeArr = [totalSeconds, totalMinutes]
             localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         } else if(lastRan == "playing"){
             totalSeconds -= elapsedTime / 1000
             totalMinutes -= totalSeconds / 60
+            totalTimeArr = [totalSeconds, totalMinutes]
             localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         }
         lastRan = "playing"
@@ -104,11 +106,13 @@ workBtn.addEventListener("click", () => {
         if(lastRan == "working"){
             totalSeconds += seconds
             totalMinutes += minutes
+            totalTimeArr = [totalSeconds, totalMinutes]
             localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         } else if(lastRan == "playing"){
             turnNormal()
             totalSeconds -= elapsedTime / 1000
             totalMinutes -= totalSeconds / 60
+            totalTimeArr = [totalSeconds, totalMinutes]
             localStorage.setItem("totalTime", JSON.stringify(totalTimeArr))
         }
         lastRan = "working"
@@ -132,6 +136,8 @@ function updateTimerPlay(){
         secondsOutput = ((seconds % 60)) % 60
         minutesOutput = ((minutes % 60)) % 60
         printTimer()
+        timeArr = [milisec, seconds, minutes, hours]
+        timeOutputsArr = [secondsOutput, minutesOutput]
         localStorage.setItem("time", JSON.stringify(timeArr))
         localStorage.setItem("timeOutputs", JSON.stringify(timeOutputsArr))
     } else{
@@ -154,6 +160,8 @@ function updateTimerWork(){
     hours = minutes / 60
     secondsOutput = (totalSeconds + (seconds % 60)) % 60
     minutesOutput = (totalMinutes + (minutes % 60)) % 60
+    timeArr = [milisec, seconds, minutes, hours]
+    timeOutputsArr = [secondsOutput, minutesOutput]
     localStorage.setItem("time", JSON.stringify(timeArr))
     localStorage.setItem("timeOutputs", JSON.stringify(timeOutputsArr))
     printTimer()
@@ -195,7 +203,9 @@ function reset(){
     printTimer()
 }
 
-
+window.onbeforeunload = () => {
+    stop()
+}
 
 
 //Pads extra 0s to numbers less than 10
