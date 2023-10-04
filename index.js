@@ -24,6 +24,7 @@ let totalTimeArr = [totalSeconds, totalMinutes]
 const timeLocalStorage = JSON.parse(localStorage.getItem("time"))
 const timeOutputsLocalStorage = JSON.parse(localStorage.getItem("timeOutputs"))
 const totalTimeLocalStorage = JSON.parse(localStorage.getItem("totalTime"))
+const lastRanLocalStorage = JSON.parse(localStorage.getItem("lastRan"))
 
 //if there is time in local storage
 if(timeLocalStorage){
@@ -38,6 +39,10 @@ if(timeOutputsLocalStorage){
     timeOutputsArr = timeOutputsLocalStorage
     secondsOutput = timeOutputsArr[0]
     minutesOutput = timeOutputsArr[1]
+}
+
+if(lastRanLocalStorage){
+    lastRan = lastRanLocalStorage
 }
 
 if(totalTimeLocalStorage){
@@ -65,6 +70,7 @@ playBtn.addEventListener("click", () => {
         isPlaying = true
         updateTotalTimes()
         lastRan = "playing"
+        localStorage.setItem("lastRan", lastRan)
         timeCompare = (new Date()).getTime()
         startTime = Date.now() + (totalSeconds * 1000)
         timerID = setInterval(updateTimerPlay, 1)
@@ -95,6 +101,7 @@ workBtn.addEventListener("click", () => {
         isWorking = true
         updateTotalTimes()
         lastRan = "working"
+        localStorage.setItem("lastRan", lastRan)
         turnNormal()
         startTime = (new Date()).getTime()
         timerID = setInterval(updateTimerWork, 1)
